@@ -3,4 +3,6 @@ import "./normalize.css"
 import "./styles.css";
 
 // import modules
-import { script } from "./script.js"
+import { initializeProject } from "./initializeProject.js"
+
+let Projects = initializeProjects();

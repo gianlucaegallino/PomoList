@@ -3,3 +3,5 @@ function readData(currentProject){
     return JSON.parse(localStorage.getItem("MyProjects"))
    } else return currentProject;
 }
+
+export { readData };
