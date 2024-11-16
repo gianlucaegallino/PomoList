@@ -2,19 +2,18 @@ import pencil from "./edit.svg"
 
 class ViewHandler{
 
-    static drawSidebarProjects(projects) {
+    static drawSidebarProjects(projectlist) {
         const projectsSection = document.querySelector("#projectsSection");
         projectsSection.innerHTML = ""
         let projectCounter = 0;
-        for (const project in projects){
-
+        for (let i = 0; i<projectlist.length; i++){
             let projectCard = document.createElement("div");
             projectCard.setAttribute("class", "project");
             projectCard.setAttribute("data-ProjectCounter",  projectCounter);
             projectCounter++;
 
             let projectName = document.createElement("p");
-            projectName.textContent = project.title;
+            projectName.textContent = projectlist[i].name;
 
             projectsSection.appendChild(projectCard);
             projectCard.appendChild(projectName);
@@ -23,6 +22,7 @@ class ViewHandler{
     }
 
     static drawProject(project){
+
         const content = document.querySelector("#content");
         content.innerHTML = "";
 
@@ -35,12 +35,13 @@ class ViewHandler{
         cardContainer.setAttribute("id", "cardContainer");
         content.appendChild(cardContainer);
 
-        let toDoCounter = 0;
-        for (const toDo in project){
 
+        let toDoCounter = 0;
+
+        for (let i = 0; i < project.toDoList.length; i++){
             let todoCard = document.createElement("div");
             todoCard.setAttribute("class", "todoCard");
-            projectCard.setAttribute("data-toDoCounter",  toDoCounter);
+            todoCard.setAttribute("data-toDoCounter",  toDoCounter);
             toDoCounter++;
             cardContainer.appendChild(todoCard);
 
@@ -52,7 +53,7 @@ class ViewHandler{
             todoCard.appendChild(cardSubSection2);
 
             let container = document.createElement("label");
-            containter.setAttribute("class", "container")
+            container.setAttribute("class", "container")
             cardSubSection1.appendChild(container);
 
             let checkbox = document.createElement("input");
@@ -65,23 +66,25 @@ class ViewHandler{
 
             let todoName = document.createElement("h2");
             todoName.setAttribute("class", "todoName");
-            todoName.textContent = toDo.name;
+            todoName.textContent = project.toDoList[i].title;
             cardSubSection1.appendChild(todoName);
 
             let dateToDo = document.createElement("p");
             dateToDo.setAttribute("class", "dateToDo");
-            dateToDo.textContent = toDo.dueDate;
+            dateToDo.textContent = project.toDoList[i].dueDate;
             cardSubSection2.appendChild(dateToDo);
 
             let pencilSvg = document.createElement("img");
             pencilSvg.setAttribute("src", pencil);
             pencilSvg.setAttribute("alt", "edit");
             pencilSvg.setAttribute("class", "pencilSvg");
-            cardSubSection.appendChild(pencilSvg);
+            cardSubSection2.appendChild(pencilSvg);
         }
     }
-    static initializeviews(projects){
-        drawSidebarProjects(projects);
-        drawProject(projects[0]);
+    static initializeviews(projectlist){
+        this.drawSidebarProjects(projectlist);
+        this.drawProject(projectlist[0]);
     }
 }
+
+export { ViewHandler };
