@@ -3,6 +3,8 @@ import "./normalize.css"
 import "./styles.css";
 
 // import modules
-import { initializeProject } from "./initializeProject.js"
+import { initializeProjects } from "./initializeProject.js"
+import { viewHandler } from "./viewHandler.js"
 
-let Projects = initializeProjects();
+let projects = initializeProjects();
+viewHandler.initializeviews(projects);

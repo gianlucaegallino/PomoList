@@ -5,7 +5,7 @@ import { format } from "date-fns";
 
 function initializeProjects(){
 
-    // create initial stuff
+    // create initial stuff TODO: MAKE IT MAKE A TODO
     project = new Project();
     toDo= new toDo("Welcome!", "Enjoy your To-Do List!", format(newDate(), 'dd/MM/yyyy'), "High", true)
     project.addToDo(toDo);
