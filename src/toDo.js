@@ -7,3 +7,5 @@ class toDo {
         this.status = status;
     }
 }
+
+export {toDo};

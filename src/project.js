@@ -7,3 +7,5 @@ class Project {
         this.toDoList.push(toDo);
     }
 }
+
+export {Project};
