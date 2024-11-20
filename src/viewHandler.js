@@ -1,6 +1,10 @@
 import pencil from "./edit.svg"
 
+import { listenerHandler } from "./listenerHandler.js"
+import { modalHandler } from "./modalHandler.js"
+
 class ViewHandler{
+
 
     static drawSidebarProjects(projectlist) {
         const projectsSection = document.querySelector("#projectsSection");
@@ -19,6 +23,7 @@ class ViewHandler{
             projectCard.appendChild(projectName);
         }
 
+        listenerHandler.addSidebarListeners(projectlist);
     }
 
     static drawProject(project){
@@ -35,15 +40,32 @@ class ViewHandler{
         cardContainer.setAttribute("id", "cardContainer");
         content.appendChild(cardContainer);
 
+        const floatingButton = document.createElement("a");
+        floatingButton.setAttribute("class", "float");
+        floatingButton.textContent="+";
+        content.appendChild(floatingButton);
 
         let toDoCounter = 0;
 
         for (let i = 0; i < project.toDoList.length; i++){
+
             let todoCard = document.createElement("div");
             todoCard.setAttribute("class", "todoCard");
             todoCard.setAttribute("data-toDoCounter",  toDoCounter);
-            toDoCounter++;
-            cardContainer.appendChild(todoCard);
+
+            //Set color border
+            switch (project.toDoList[i].priority){
+                case 'High':
+                    todoCard.classList.add("highPriorityBorder");
+                    break;
+                case 'Medium':
+                    todoCard.classList.add("mediumPriorityBorder");
+                    break;
+                case 'Low':
+                    todoCard.classList.add("lowPriorityBorder");
+                    break;
+            }
+
 
             let cardSubSection1  = document.createElement("div");
             let cardSubSection2 = document.createElement("div");
@@ -58,6 +80,11 @@ class ViewHandler{
 
             let checkbox = document.createElement("input");
             checkbox.setAttribute("type", "checkbox");
+            checkbox.setAttribute("data-checkboxCounter", toDoCounter);
+            if (project.toDoList[i].status == false){
+                checkbox.checked = true;
+                todoCard.classList.add("ghostMode");
+            }
             container.appendChild(checkbox);
 
             let checkmark = document.createElement("span");
@@ -78,12 +105,22 @@ class ViewHandler{
             pencilSvg.setAttribute("src", pencil);
             pencilSvg.setAttribute("alt", "edit");
             pencilSvg.setAttribute("class", "pencilSvg");
+            pencilSvg.setAttribute("data-pencilCounter", toDoCounter);
             cardSubSection2.appendChild(pencilSvg);
+
+            toDoCounter++;
+
+            cardContainer.appendChild(todoCard);
         }
+
+        listenerHandler.addProjectListeners(project);
     }
     static initializeviews(projectlist){
         this.drawSidebarProjects(projectlist);
         this.drawProject(projectlist[0]);
+        modalHandler.createTodoModal();
+        modalHandler.createExpandModal();
+        modalHandler.createProjectModal();
     }
 }
 

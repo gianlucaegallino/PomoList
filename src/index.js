@@ -8,3 +8,4 @@ import { ViewHandler } from "./viewHandler.js"
 
 let projectList = initializeProjects();
 ViewHandler.initializeviews(projectList);
+

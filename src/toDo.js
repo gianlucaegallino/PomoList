@@ -6,6 +6,10 @@ class toDo {
         this.priority = priority;
         this.status = status;
     }
+
+    updateStatus(stat){
+        this.status = !stat;
+    }
 }
 
 export {toDo};

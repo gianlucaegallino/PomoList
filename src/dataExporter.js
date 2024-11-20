@@ -16,3 +16,5 @@ function exportDataToFile(projectList, fileName){
 
     URL.revokeObjectURL(url);
 }
+
+export {exportDataToFile}; 
