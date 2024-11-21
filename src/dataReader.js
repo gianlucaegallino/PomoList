@@ -1,7 +1,9 @@
-function readData(currentProject){
+import {state} from  "./state.js";
+
+function readData(projectList){
    if(localStorage.getItem("MyProjects")) {
     return JSON.parse(localStorage.getItem("MyProjects"))
-   } else return currentProject;
+   } else return projectList;
 }
 
 export { readData };

@@ -2,28 +2,38 @@ import pencil from "./edit.svg";
 
 import { listenerHandler } from "./listenerHandler.js";
 import { modalHandler } from "./modalHandler.js";
+import {state} from  "./state.js";
 
 class ViewHandler {
   static currentlyRenderedProject;
 
-  static drawSidebarProjects(projectlist) {
+  static initializeviews() {
+    this.drawSidebarProjects();
+    this.drawProject(state.projectList[0]);
+    modalHandler.createTodoModal();
+    modalHandler.createExpandModal();
+    modalHandler.createProjectModal();
+    modalHandler.addModalListeners();
+  }
+
+  static drawSidebarProjects() {
     const projectsSection = document.querySelector("#projectsSection");
     projectsSection.innerHTML = "";
     let projectCounter = 0;
-    for (let i = 0; i < projectlist.length; i++) {
+    for (let i = 0; i < state.projectList.length; i++) {
       let projectCard = document.createElement("div");
       projectCard.setAttribute("class", "project");
       projectCard.setAttribute("data-ProjectCounter", projectCounter);
       projectCounter++;
 
       let projectName = document.createElement("p");
-      projectName.textContent = projectlist[i].name;
+      projectName.textContent = state.projectList[i].name;
 
       projectsSection.appendChild(projectCard);
       projectCard.appendChild(projectName);
     }
 
-    listenerHandler.addSidebarListeners(projectlist);
+    listenerHandler.addSidebarListeners(state.projectList);
   }
 
   static drawProject(project) {
@@ -113,14 +123,7 @@ class ViewHandler {
 
     listenerHandler.addProjectListeners(project);
   }
-  static initializeviews(projectlist) {
-    this.drawSidebarProjects(projectlist);
-    this.drawProject(projectlist[0]);
-    modalHandler.createTodoModal();
-    modalHandler.createExpandModal();
-    modalHandler.createProjectModal();
-    modalHandler.addModalListeners(projectlist);
-  }
+
 }
 
 export { ViewHandler };

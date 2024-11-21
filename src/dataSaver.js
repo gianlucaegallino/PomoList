@@ -1,7 +1,11 @@
-function saveData(projectList){
+import {state} from "./state.js";
 
-    const jsonString= JSON.stringify(projectList);
+function saveData(){
+
+    const jsonString= JSON.stringify(state.projectList);
 
     localStorage.setItem("MyProjects", jsonString);
     
 }
+
+export {saveData};

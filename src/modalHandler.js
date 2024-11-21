@@ -2,6 +2,8 @@ import { Project } from "./project";
 import { ViewHandler } from "./viewHandler";
 import { toDo } from "./toDo";
 import { listenerHandler } from "./listenerHandler";
+import { saveData } from "./dataSaver";
+import {state} from  "./state.js";
 
 class modalHandler {
   static createTodoModal() {
@@ -264,7 +266,7 @@ class modalHandler {
     modal.showModal();
   }
 
-  static addModalListeners(projectlist) {
+  static addModalListeners() {
     //Add project listeners
     const addprojectdialog = document.querySelector("dialog.modalDialog2");
     const projecttitle = document.querySelector(
@@ -277,9 +279,11 @@ class modalHandler {
 
     cancelproject.addEventListener("click", () => addprojectdialog.close());
     addprojectdialog.addEventListener("submit", () => {
-      projectlist.push(new Project(projecttitle.value));
+      state.projectList.push(new Project(projecttitle.value));
       projecttitle.value = "";
-      ViewHandler.drawSidebarProjects(projectlist);
+      ViewHandler.drawSidebarProjects(state.projectList);
+      //savedata
+      saveData(state.projectList);
     });
 
     //Add to-do listeners
@@ -324,6 +328,8 @@ class modalHandler {
 
       //Redraw project
       ViewHandler.drawProject(ViewHandler.currentlyRenderedProject);
+      //savedata
+      saveData(state.projectList);
     });
     //Edit to-do listeners
 
@@ -350,6 +356,8 @@ class modalHandler {
 
       //Redraw project
       ViewHandler.drawProject(ViewHandler.currentlyRenderedProject);
+      //savedata
+      saveData(state.projectList);
     });
   }
 }

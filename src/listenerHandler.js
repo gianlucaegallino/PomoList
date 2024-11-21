@@ -1,17 +1,19 @@
 import { ViewHandler } from "./viewHandler.js";
 import { exportDataToFile } from "./dataExporter.js";
 import { modalHandler } from "./modalHandler.js";
+import { saveData } from "./dataSaver";
+import { state } from "./state";
 
 class listenerHandler {
   static lastSelectedToDo;
 
-  static addSidebarListeners(projectlist) {
+  static addSidebarListeners() {
     //Project Listeners
     const projects = document.querySelectorAll(".project");
     for (const pro of projects) {
       let index = pro.getAttribute("data-ProjectCounter");
       pro.addEventListener("click", () =>
-        ViewHandler.drawProject(projectlist[index])
+        ViewHandler.drawProject(state.projectList[index])
       );
     }
     //New Project Button Listeners
@@ -23,7 +25,7 @@ class listenerHandler {
 
     //Export Listeners
     const exportBtn = document.querySelector(".projectExport");
-    exportBtn.addEventListener("click", () => exportDataToFile(projectlist));
+    exportBtn.addEventListener("click", () => exportDataToFile(state.projectList));
   }
 
   static addProjectListeners(project) {
@@ -50,10 +52,13 @@ class listenerHandler {
 
     for (const cb of cbs) {
       let index = cb.getAttribute("data-checkboxcounter");
+      
       cb.addEventListener("click", () => {
-        project.toDoList[index].updateStatus(cb.checked);
+        project.toDoList[index].status = !cb.checked;
         cards[index].classList.toggle("ghostMode");
+        saveData();
       });
+
     }
   }
 }

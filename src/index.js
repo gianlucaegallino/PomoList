@@ -2,10 +2,6 @@
 import "./normalize.css"
 import "./styles.css";
 
-// import modules
-import { initializeProjects } from "./initializeProject.js"
-import { ViewHandler } from "./viewHandler.js"
+import {state} from "./state.js"
 
-let projectList = initializeProjects();
-ViewHandler.initializeviews(projectList);
-
+new state();

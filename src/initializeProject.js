@@ -2,6 +2,7 @@ import { Project } from "./project.js";
 import { toDo } from "./toDo.js"
 import { readData } from "./dataReader.js"
 import { format } from "date-fns";
+import { state } from "./state.js";
 
 function initializeProjects(){
 
