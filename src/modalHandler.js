@@ -1,7 +1,8 @@
 import { Project } from "./project";
 import { ViewHandler } from "./viewHandler";
-import { toDo } from "./toDo"
-import { customizeObject } from "webpack-merge";
+import { toDo } from "./toDo";
+import { listenerHandler } from "./listenerHandler";
+
 class modalHandler {
   static createTodoModal() {
     const modal = document.createElement("dialog");
@@ -249,13 +250,12 @@ class modalHandler {
     buttonContainer.appendChild(cancelBtn);
   }
 
-  static showExpandModal(todo) {;
+  static showExpandModal(todo) {
     const modal = document.querySelector(".modalDialog3");
     const title = document.querySelector(".modaltitle3");
     const desc = document.querySelector(".desc");
     const date = document.querySelector(".date");
     const prio = document.querySelector(".prio");
-
 
     desc.textContent = "Description: " + todo.description;
     date.textContent = "Date: " + todo.dueDate;
@@ -312,8 +312,7 @@ class modalHandler {
       let prio = todopriority.value;
       let status = true;
 
-      let myTodo = new toDo(title,desc,date,prio,status);
-
+      let myTodo = new toDo(title, desc, date, prio, status);
 
       ViewHandler.currentlyRenderedProject.toDoList.push(myTodo);
 
@@ -325,8 +324,6 @@ class modalHandler {
 
       //Redraw project
       ViewHandler.drawProject(ViewHandler.currentlyRenderedProject);
-     
-      
     });
     //Edit to-do listeners
 
@@ -339,14 +336,21 @@ class modalHandler {
     );
 
     canceledit.addEventListener("click", () => editdialog.close());
-    /*
-    deleteedit.addEventListener("submit", ()=>{
+
+    deleteedit.addEventListener("click", () => {
       //remove todo
-      HOW DO I MAKE THIS KNOW WHICH PROJECT TO remove A TO DO from? THERE ISNT A CURRENTLY PICKED VARIABLE OR SIMILAR
-      also, what to do to remove? no sacar los datos de la gui
+
+      let index = ViewHandler.currentlyRenderedProject.toDoList.indexOf(
+        listenerHandler.lastSelectedToDo
+      );
+
+      if (index > -1) {
+        ViewHandler.currentlyRenderedProject.toDoList.splice(index, 1);
+      }
 
       //Redraw project
-    })*/
+      ViewHandler.drawProject(ViewHandler.currentlyRenderedProject);
+    });
   }
 }
 

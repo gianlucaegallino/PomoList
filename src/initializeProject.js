@@ -5,9 +5,9 @@ import { format } from "date-fns";
 
 function initializeProjects(){
 
-    // create initial stuff TODO: MAKE IT MAKE A TODO
+    // create initial stuff 
     let projectList = [new Project("Test Project")];
-    let todoobject = new toDo("Welcome!", "Enjoy your To-Do List!", format(new Date(), 'dd/MM/yyyy'), "High", true);
+    let todoobject = new toDo("Welcome!", "Enjoy your To-Do List!", format(new Date(), 'yyyy-MM-dd'), "High", true);
     projectList[0].addToDo(todoobject);
 
     // Try read from LocalStorage
