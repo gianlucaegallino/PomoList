@@ -1,10 +1,13 @@
+import { Project } from "./project";
+import { ViewHandler } from "./viewHandler";
+import { toDo } from "./toDo"
+import { customizeObject } from "webpack-merge";
 class modalHandler {
   static createTodoModal() {
     const modal = document.createElement("dialog");
     modal.setAttribute("class", "modalDialog");
-    
 
-    const modalContainer = document.querySelector("#modalContainer")
+    const modalContainer = document.querySelector("#modalContainer");
     modalContainer.appendChild(modal);
 
     const form = document.createElement("form");
@@ -32,6 +35,7 @@ class modalHandler {
     buttonContainer.appendChild(submitBtn);
 
     const cancelBtn = document.createElement("button");
+    cancelBtn.setAttribute("type", "button");
     cancelBtn.setAttribute("class", "cancelBtn");
     cancelBtn.textContent = "Cancel";
     buttonContainer.appendChild(cancelBtn);
@@ -118,21 +122,18 @@ class modalHandler {
     input3.appendChild(option1);
     input3.appendChild(option2);
     input3.appendChild(option3);
-
-
   }
 
-  static showTodoModal(){    
+  static showTodoModal() {
     const modal = document.querySelector(".modalDialog");
     modal.showModal();
-
   }
-  
+
   static createProjectModal() {
     const modal = document.createElement("dialog");
     modal.setAttribute("class", "modalDialog2");
 
-    const modalContainer = document.querySelector("#modalContainer")
+    const modalContainer = document.querySelector("#modalContainer");
     modalContainer.appendChild(modal);
 
     const form = document.createElement("form");
@@ -186,26 +187,22 @@ class modalHandler {
     buttonContainer.appendChild(submitBtn);
 
     const cancelBtn = document.createElement("button");
+    cancelBtn.setAttribute("type", "button");
     cancelBtn.setAttribute("class", "cancelBtn");
     cancelBtn.textContent = "Cancel";
     buttonContainer.appendChild(cancelBtn);
   }
 
-
-  static showProjectModal(){    
+  static showProjectModal() {
     const modal = document.querySelector(".modalDialog2");
     modal.showModal();
-
   }
 
   static createExpandModal() {
-
-    
     const modal = document.createElement("dialog");
     modal.setAttribute("class", "modalDialog3");
 
-
-    const modalContainer = document.querySelector("#modalContainer")
+    const modalContainer = document.querySelector("#modalContainer");
     modalContainer.appendChild(modal);
 
     const form = document.createElement("form");
@@ -235,7 +232,6 @@ class modalHandler {
     formElements.appendChild(dateText);
     formElements.appendChild(priorityText);
 
-
     const buttonContainer = document.createElement("div");
     buttonContainer.setAttribute("class", "buttonContainer");
     form.appendChild(buttonContainer);
@@ -247,15 +243,13 @@ class modalHandler {
     buttonContainer.appendChild(submitBtn);
 
     const cancelBtn = document.createElement("button");
+    cancelBtn.setAttribute("type", "button");
     cancelBtn.setAttribute("class", "cancelBtn");
     cancelBtn.textContent = "Cancel";
     buttonContainer.appendChild(cancelBtn);
-
   }
 
-
-  static showExpandModal(todo){    
-    console.log(todo.title);
+  static showExpandModal(todo) {;
     const modal = document.querySelector(".modalDialog3");
     const title = document.querySelector(".modaltitle3");
     const desc = document.querySelector(".desc");
@@ -263,15 +257,97 @@ class modalHandler {
     const prio = document.querySelector(".prio");
 
 
-    console.log(title);
     desc.textContent = "Description: " + todo.description;
     date.textContent = "Date: " + todo.dueDate;
-    prio.textContent = "Date: " + todo.priority;
+    prio.textContent = "Priority: " + todo.priority;
     title.textContent = todo.title;
     modal.showModal();
-
   }
 
+  static addModalListeners(projectlist) {
+    //Add project listeners
+    const addprojectdialog = document.querySelector("dialog.modalDialog2");
+    const projecttitle = document.querySelector(
+      "dialog.modalDialog2 input.textElement"
+    );
+
+    const cancelproject = document.querySelector(
+      "dialog.modalDialog2 button.cancelBtn"
+    );
+
+    cancelproject.addEventListener("click", () => addprojectdialog.close());
+    addprojectdialog.addEventListener("submit", () => {
+      projectlist.push(new Project(projecttitle.value));
+      projecttitle.value = "";
+      ViewHandler.drawSidebarProjects(projectlist);
+    });
+
+    //Add to-do listeners
+    const tododialog = document.querySelector("dialog.modalDialog");
+    const todotitle = document.querySelector(
+      "dialog.modalDialog input#Title.textElement"
+    );
+    const tododesc = document.querySelector(
+      "dialog.modalDialog input#Description.textElement"
+    );
+
+    const tododuedate = document.querySelector(
+      "dialog.modalDialog input#Date.textElement"
+    );
+    const todopriority = document.querySelector(
+      "dialog.modalDialog select#Priority.textElement"
+    );
+    const canceltodo = document.querySelector(
+      "dialog.modalDialog button.cancelBtn"
+    );
+
+    canceltodo.addEventListener("click", () => tododialog.close());
+
+    tododialog.addEventListener("submit", () => {
+      //Add a to-do
+
+      let title = todotitle.value;
+      let desc = tododesc.value;
+      let date = tododuedate.value;
+      let prio = todopriority.value;
+      let status = true;
+
+      let myTodo = new toDo(title,desc,date,prio,status);
+
+
+      ViewHandler.currentlyRenderedProject.toDoList.push(myTodo);
+
+      //Reset form text
+      todotitle.value = "";
+      tododesc.value = "";
+      todopriority.value = "Low";
+      tododuedate.value = "";
+
+      //Redraw project
+      ViewHandler.drawProject(ViewHandler.currentlyRenderedProject);
+     
+      
+    });
+    //Edit to-do listeners
+
+    const editdialog = document.querySelector("dialog.modalDialog3");
+    const deleteedit = document.querySelector(
+      "dialog.modalDialog3 button.submitBtn"
+    );
+    const canceledit = document.querySelector(
+      "dialog.modalDialog3 button.cancelBtn"
+    );
+
+    canceledit.addEventListener("click", () => editdialog.close());
+    /*
+    deleteedit.addEventListener("submit", ()=>{
+      //remove todo
+      HOW DO I MAKE THIS KNOW WHICH PROJECT TO remove A TO DO from? THERE ISNT A CURRENTLY PICKED VARIABLE OR SIMILAR
+      also, what to do to remove? no sacar los datos de la gui
+
+      //Redraw project
+    })*/
+  }
 }
 
 export { modalHandler };

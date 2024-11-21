@@ -30,15 +30,12 @@ class listenerHandler{
          modalHandler.showTodoModal();
         });
 
-        //Checkbox listener to update status;; do something if it happens?
-        // transparent and sending it to the bottom of the list sounds good.
-
         //Todo Edit button listener
         const editButtons = document.querySelectorAll(".pencilSvg");
         for (const pencil of editButtons){
             let index = pencil.getAttribute("data-pencilCounter");
             pencil.addEventListener("click", () => 
-                modalHandler.showExpandModal(project.toDoList[index]) // PASAR COMO REFERENCIA LOS DATOS
+                modalHandler.showExpandModal(project.toDoList[index]) 
             );
         }
 
@@ -51,7 +48,6 @@ class listenerHandler{
             let index = cb.getAttribute("data-checkboxcounter");
             cb.addEventListener("click", () => {
                 project.toDoList[index].updateStatus(cb.checked);
-                console.log("ghostToggle");
                 cards[index].classList.toggle("ghostMode");
             });
         }
